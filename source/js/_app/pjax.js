@@ -1,3 +1,4 @@
+'use strict';
 const domInit = function() {
   $.each('.overview .menu > .item', function(el) {
     siteNav.child('.menu').appendChild(el.cloneNode(true));
@@ -56,7 +57,7 @@ const siteRefresh = function (reload) {
   vendorCss('mermaid');
   vendorJs('chart');
   vendorJs('valine', function() {
-    var options = Object.assign({}, CONFIG.valine);
+    let options = Object.assign({}, CONFIG.valine);
     options = Object.assign(options, LOCAL.valine||{});
     options.el = '#comments';
     options.pathname = LOCAL.path;

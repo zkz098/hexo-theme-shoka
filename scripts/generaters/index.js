@@ -8,7 +8,7 @@ hexo.config.index_generator = Object.assign({
   order_by: '-date'
 }, hexo.config.index_generator);
 
-hexo.extend.generator.register('index', function(locals) {
+hexo.extend.generator.register('index', function (locals) {
   let covers = [];
   let catlist = [];
   let pages = [];
@@ -20,14 +20,14 @@ hexo.extend.generator.register('index', function(locals) {
   const path = config.index_generator.path || '';
   const categories = locals.categories;
 
-  var getTopcat = function(cat) {
+  const getTopcat = function (cat) {
     if (cat.parent) {
-      var pCat = categories.findOne({'_id': cat.parent})
+      const pCat = categories.findOne({'_id': cat.parent});
       return getTopcat(pCat);
     } else {
       return cat
     }
-  }
+  };
 
   if (categories && categories.length) {
     categories.forEach((cat) => {
@@ -54,11 +54,11 @@ hexo.extend.generator.register('index', function(locals) {
           cat.child = child.length;
           cat.subs = child.sort({name: 1}).limit(6).toArray();
           pl = Math.max(0, pl - child.length)
-          if(pl > 0) {
-            cat.subs.push.apply(cat.subs, cat.posts.sort({title: 1}).filter(function(item, i) {
-                                            if(item.categories.last()._id == cat._id)
-                                              return true
-                                          }).limit(pl).toArray());
+          if (pl > 0) {
+            cat.subs.push.apply(cat.subs, cat.posts.sort({title: 1}).filter(function (item, i) {
+              if (item.categories.last()._id == cat._id)
+                return true
+            }).limit(pl).toArray());
           }
         } else {
           cat.subs = cat.posts.sort({title: 1}).limit(6).toArray();
@@ -69,7 +69,7 @@ hexo.extend.generator.register('index', function(locals) {
     });
   }
 
-  if(posts.length > 0) {
+  if (posts.length > 0) {
     pages = pagination(path, posts, {
       perPage: config.index_generator.per_page,
       layout: ['index', 'archive'],
@@ -82,14 +82,14 @@ hexo.extend.generator.register('index', function(locals) {
     });
   } else {
     pages = [{
-        path,
-        layout: ['index', 'archive'],
-        data: {
-          __index: true,
-          catlist: catlist,
-          sticky: sticky
-        }
-      }];
+      path,
+      layout: ['index', 'archive'],
+      data: {
+        __index: true,
+        catlist: catlist,
+        sticky: sticky
+      }
+    }];
   }
 
   return [...covers, ...pages];

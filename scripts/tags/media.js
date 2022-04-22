@@ -12,7 +12,6 @@ function postMedia(args, content) {
     case 'video':
     case 'audio':
       return `<div class="media-container"><div class="player" data-type="${args[0]}" data-src='${JSON.stringify(list)}'></div></div>`;
-      break;
   }
 
 }

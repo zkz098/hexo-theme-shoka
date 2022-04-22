@@ -1,57 +1,58 @@
+'use strict';
 const sideBarToggleHandle = function (event, force) {
-  if(sideBar.hasClass('on')) {
+  if (sideBar.hasClass('on')) {
     sideBar.removeClass('on');
     menuToggle.removeClass('close');
-    if(force) {
+    if (force) {
       sideBar.style = '';
     } else {
       transition(sideBar, 'slideRightOut');
     }
   } else {
-    if(force) {
+    if (force) {
       sideBar.style = '';
     } else {
       transition(sideBar, 'slideRightIn', function () {
-          sideBar.addClass('on');
-          menuToggle.addClass('close');
-        });
+        sideBar.addClass('on');
+        menuToggle.addClass('close');
+      });
     }
   }
 }
 
 const sideBarTab = function () {
-  var sideBarInner = sideBar.child('.inner');
-  var panels = sideBar.find('.panel');
+  const sideBarInner = sideBar.child('.inner');
+  const panels = sideBar.find('.panel');
 
-  if(sideBar.child('.tab')) {
+  if (sideBar.child('.tab')) {
     sideBarInner.removeChild(sideBar.child('.tab'));
   }
 
-  var list = document.createElement('ul'), active = 'active';
+  let list = document.createElement('ul'), active = 'active';
   list.className = 'tab';
 
   ['contents', 'related', 'overview'].forEach(function (item) {
-    var element = sideBar.child('.panel.' + item)
+    const element = sideBar.child('.panel.' + item);
 
-    if(element.innerHTML.replace(/(^\s*)|(\s*$)/g, "").length < 1) {
-      if(item == 'contents') {
+    if (element.innerHTML.replace(/(^\s*)|(\s*$)/g, "").length < 1) {
+      if (item === 'contents') {
         showContents.display("none")
       }
       return;
     }
 
-    if(item == 'contents') {
+    if (item === 'contents') {
       showContents.display("")
     }
 
-    var tab = document.createElement('li')
-    var span = document.createElement('span')
-    var text = document.createTextNode(element.attr('data-title'));
+    const tab = document.createElement('li');
+    const span = document.createElement('span');
+    const text = document.createTextNode(element.attr('data-title'));
     span.appendChild(text);
     tab.appendChild(span);
     tab.addClass(item + ' item');
 
-    if(active) {
+    if (active) {
       element.addClass(active);
       tab.addClass(active);
     } else {
@@ -59,7 +60,7 @@ const sideBarTab = function () {
     }
 
     tab.addEventListener('click', function (element) {
-      var target = event.currentTarget;
+      const target = event.currentTarget;
       if (target.hasClass('active'))
         return;
 
@@ -89,46 +90,8 @@ const sideBarTab = function () {
 }
 
 const sidebarTOC = function () {
-  var navItems = $.all('.contents li');
-
-  if (navItems.length < 1) {
-    return;
-  }
-
-  var sections = Array.prototype.slice.call(navItems) || [];
-  var activeLock = null;
-
-  sections = sections.map(function (element, index) {
-    var link = element.child('a.toc-link');
-    var anchor = $(decodeURI(link.attr('href')));
-    if(!anchor)
-      return
-    var alink = anchor.child('a.anchor');
-
-    var anchorScroll = function (event) {
-      event.preventDefault();
-      var target = $(decodeURI(event.currentTarget.attr('href')));
-
-      activeLock = index;
-      pageScroll(target, null, function() {
-          activateNavByIndex(index)
-          activeLock = null
-        })
-    };
-
-    // TOC item animation navigate.
-    link.addEventListener('click', anchorScroll);
-    alink && alink.addEventListener('click', function(event) {
-      anchorScroll(event)
-      clipBoard(CONFIG.hostname + '/' + LOCAL.path + event.currentTarget.attr('href'))
-    });
-    return anchor;
-  });
-
-  var tocElement = sideBar.child('.contents.panel');
-
-  var activateNavByIndex = function (index, lock) {
-    var target = navItems[index]
+  const activateNavByIndex = function (index, lock) {
+    const target = navItems[index];
 
     if (!target)
       return;
@@ -148,27 +111,65 @@ const sidebarTOC = function () {
     target.addClass('active current');
     sections[index] && sections[index].addClass('active');
 
-    var parent = target.parentNode;
+    let parent = target.parentNode;
 
     while (!parent.matches('.contents')) {
       if (parent.matches('li')) {
         parent.addClass('active');
-        var t = $(parent.child('a.toc-link').attr('href'))
-        if(t) {
+        const t = $(parent.child('a.toc-link').attr('href'));
+        if (t) {
           t.addClass('active');
         }
       }
       parent = parent.parentNode;
     }
     // Scrolling to center active TOC element if TOC content is taller then viewport.
-    if(getComputedStyle(sideBar).display != 'none' && tocElement.hasClass('active')) {
-      pageScroll(tocElement, target.offsetTop- (tocElement.offsetHeight / 4))
+    if (getComputedStyle(sideBar).display !== 'none' && tocElement.hasClass('active')) {
+      pageScroll(tocElement, target.offsetTop - (tocElement.offsetHeight / 4))
     }
+  };
+  const navItems = $.all('.contents li');
+
+  if (navItems.length < 1) {
+    return;
   }
 
-  var findIndex = function(entries) {
-    var index = 0;
-    var entry = entries[index];
+  let sections = Array.prototype.slice.call(navItems) || [];
+  let activeLock = null;
+
+  sections = sections.map(function (element, index) {
+    const link = element.child('a.toc-link');
+    const anchor = $(decodeURI(link.attr('href')));
+    if (!anchor)
+      return
+    const alink = anchor.child('a.anchor');
+
+    const anchorScroll = function (event) {
+      event.preventDefault();
+      const target = $(decodeURI(event.currentTarget.attr('href')));
+
+      activeLock = index;
+      pageScroll(target, null, function () {
+        activateNavByIndex(index)
+        activeLock = null
+      })
+    };
+
+    // TOC item animation navigate.
+    link.addEventListener('click', anchorScroll);
+    alink && alink.addEventListener('click', function (event) {
+      anchorScroll(event)
+      clipBoard(CONFIG.hostname + '/' + LOCAL.path + event.currentTarget.attr('href'))
+    });
+    return anchor;
+  });
+
+  const tocElement = sideBar.child('.contents.panel');
+
+
+  const findIndex = function (entries) {
+    let index = 0;
+    let entry = entries[index];
 
     if (entry.boundingClientRect.top > 0) {
       index = sections.indexOf(entry.target);
@@ -182,15 +183,15 @@ const sidebarTOC = function () {
       }
     }
     return sections.indexOf(entry.target);
-  }
+  };
 
-  var createIntersectionObserver = function() {
+  const createIntersectionObserver = function () {
     if (!window.IntersectionObserver)
       return
 
-    var observer = new IntersectionObserver(function (entries, observe) {
-      var index = findIndex(entries) + (diffY < 0? 1 : 0);
-      if(activeLock === null) {
+    const observer = new IntersectionObserver(function (entries, observe) {
+      const index = findIndex(entries) + (diffY < 0 ? 1 : 0);
+      if (activeLock === null) {
         activateNavByIndex(index);
       }
     }, {
@@ -201,7 +202,7 @@ const sidebarTOC = function () {
     sections.forEach(function (element) {
       element && observer.observe(element);
     });
-  }
+  };
 
   createIntersectionObserver();
 }
@@ -220,14 +221,14 @@ const goToCommentHandle = function () {
 
 const menuActive = function () {
   $.each('.menu .item:not(.title)', function (element) {
-    var target = element.child('a[href]');
-    var parentItem = element.parentNode.parentNode;
+    const target = element.child('a[href]');
+    const parentItem = element.parentNode.parentNode;
     if (!target) return;
-    var isSamePath = target.pathname === location.pathname || target.pathname === location.pathname.replace('index.html', '');
-    var isSubPath = !CONFIG.root.startsWith(target.pathname) && location.pathname.startsWith(target.pathname);
-    var active = target.hostname === location.hostname && (isSamePath || isSubPath)
+    const isSamePath = target.pathname === location.pathname || target.pathname === location.pathname.replace('index.html', '');
+    const isSubPath = !CONFIG.root.startsWith(target.pathname) && location.pathname.startsWith(target.pathname);
+    const active = target.hostname === location.hostname && (isSamePath || isSubPath);
     element.toggleClass('active', active);
-    if(element.parentNode.child('.active') && parentItem.hasClass('dropdown')) {
+    if (element.parentNode.child('.active') && parentItem.hasClass('dropdown')) {
       parentItem.removeClass('active').addClass('expand');
     } else {
       parentItem.removeClass('expand');

@@ -1,7 +1,8 @@
-var statics = CONFIG.statics.indexOf('//') > 0 ? CONFIG.statics : CONFIG.root
-var scrollAction = { x: 'undefined', y: 'undefined' };
-var diffY = 0;
-var originTitle, titleTime;
+'use strict';
+const statics = CONFIG.statics.indexOf('//') > 0 ? CONFIG.statics : CONFIG.root;
+const scrollAction = {x: 'undefined', y: 'undefined'};
+let diffY = 0;
+let originTitle, titleTime;
 
 const BODY = document.getElementsByTagName('body')[0];
 const HTML = document.documentElement;
@@ -13,13 +14,13 @@ const menuToggle = siteNav.child('.toggle');
 const quickBtn = $('#quick');
 const sideBar = $('#sidebar');
 const siteBrand = $('#brand');
-var toolBtn = $('#tool'), toolPlayer, backToTop, goToComment, showContents;
-var siteSearch = $('#search');
-var siteNavHeight, headerHightInner, headerHight;
-var oWinHeight = window.innerHeight;
-var oWinWidth = window.innerWidth;
-var LOCAL_HASH = 0, LOCAL_URL = window.location.href;
-var pjax;
+let toolBtn = $('#tool'), toolPlayer, backToTop, goToComment, showContents;
+let siteSearch = $('#search');
+let siteNavHeight, headerHightInner, headerHight;
+let oWinHeight = window.innerHeight;
+let oWinWidth = window.innerWidth;
+let LOCAL_HASH = 0, LOCAL_URL = window.location.href;
+let pjax;
 const lazyload = lozad('img, [data-background-image]', {
     loaded: function(el) {
         el.addClass('lozaded');
@@ -51,8 +52,8 @@ const Loader = {
 }
 
 const changeTheme = function(type) {
-  var btn = $('.theme .ic')
-  if(type == 'dark') {
+  const btn = $('.theme .ic');
+  if(type === 'dark') {
     HTML.attr('data-theme', type);
     btn.removeClass('i-sun')
     btn.addClass('i-moon')
@@ -64,7 +65,7 @@ const changeTheme = function(type) {
 }
 
 const changeMetaTheme = function(color) {
-  if(HTML.attr('data-theme') == 'dark')
+  if(HTML.attr('data-theme') === 'dark')
     color = '#222'
 
   $('meta[name="theme-color"]').attr('content', color);
@@ -79,7 +80,7 @@ const themeColorListener = function () {
     }
   });
 
-  var t = store.get('theme');
+  const t = store.get('theme');
   if(t) {
     changeTheme(t);
   } else {
@@ -89,37 +90,38 @@ const themeColorListener = function () {
   }
 
   $('.theme').addEventListener('click', function(event) {
-    var btn = event.currentTarget.child('.ic')
+    let c;
+    const btn = event.currentTarget.child('.ic');
 
-    var neko = BODY.createChild('div', {
+    const neko = BODY.createChild('div', {
       id: 'neko',
       innerHTML: '<div class="planet"><div class="sun"></div><div class="moon"></div></div><div class="body"><div class="face"><section class="eyes left"><span class="pupil"></span></section><section class="eyes right"><span class="pupil"></span></section><span class="nose"></span></div></div>'
     });
 
-    var hideNeko = function() {
-        transition(neko, {
-          delay: 2500,
-          opacity: 0
-        }, function() {
-          BODY.removeChild(neko)
-        });
-    }
+    const hideNeko = function () {
+      transition(neko, {
+        delay: 2500,
+        opacity: 0
+      }, function () {
+        BODY.removeChild(neko)
+      });
+    };
 
     if(btn.hasClass('i-sun')) {
-      var c = function() {
+      c = function() {
           neko.addClass('dark');
           changeTheme('dark');
           store.set('theme', 'dark');
           hideNeko();
-        }
+        };
     } else {
       neko.addClass('dark');
-      var c = function() {
-          neko.removeClass('dark');
-          changeTheme();
-          store.set('theme', 'light');
-          hideNeko();
-        }
+      c = function () {
+        neko.removeClass('dark');
+        changeTheme();
+        store.set('theme', 'light');
+        hideNeko();
+      };
     }
     transition(neko, 1, function() {
       setTimeout(c, 210)
@@ -154,7 +156,7 @@ const showtip = function(msg) {
   if(!msg)
     return
 
-  var tipbox = BODY.createChild('div', {
+  const tipbox = BODY.createChild('div', {
     innerHTML: msg,
     className: 'tip'
   });
@@ -172,7 +174,7 @@ const resizeHandle = function (event) {
   headerHightInner = siteHeader.height();
   headerHight = headerHightInner + $('#waves').height();
 
-  if(oWinWidth != window.innerWidth)
+  if(oWinWidth !== window.innerWidth)
     sideBarToggleHandle(null, 1);
 
   oWinHeight = window.innerHeight;
@@ -181,11 +183,11 @@ const resizeHandle = function (event) {
 }
 
 const scrollHandle = function (event) {
-  var winHeight = window.innerHeight;
-  var docHeight = getDocHeight();
-  var contentVisibilityHeight = docHeight > winHeight ? docHeight - winHeight : document.body.scrollHeight - winHeight;
-  var SHOW = window.pageYOffset > headerHightInner;
-  var startScroll = window.pageYOffset > 0;
+  const winHeight = window.innerHeight;
+  const docHeight = getDocHeight();
+  const contentVisibilityHeight = docHeight > winHeight ? docHeight - winHeight : document.body.scrollHeight - winHeight;
+  const SHOW = window.scrollY > headerHightInner;
+  const startScroll = window.scrollY > 0;
 
   if (SHOW) {
     changeMetaTheme('#FFF');
@@ -196,15 +198,15 @@ const scrollHandle = function (event) {
   siteNav.toggleClass('show', SHOW);
   toolBtn.toggleClass('affix', startScroll);
   siteBrand.toggleClass('affix', startScroll);
-  sideBar.toggleClass('affix', window.pageYOffset > headerHight && document.body.offsetWidth > 991);
+  sideBar.toggleClass('affix', window.scrollY > headerHight && document.body.offsetWidth > 991);
 
   if (typeof scrollAction.y == 'undefined') {
-    scrollAction.y = window.pageYOffset;
+    scrollAction.y = window.scrollY;
     //scrollAction.x = Container.scrollLeft;
     //scrollAction.y = Container.scrollTop;
   }
   //var diffX = scrollAction.x - Container.scrollLeft;
-  diffY = scrollAction.y - window.pageYOffset;
+  diffY = scrollAction.y - window.scrollY;
 
   //if (diffX < 0) {
   // Scroll right
@@ -223,9 +225,9 @@ const scrollHandle = function (event) {
     // First scroll event
   }
   //scrollAction.x = Container.scrollLeft;
-  scrollAction.y = window.pageYOffset;
+  scrollAction.y = window.scrollY;
 
-  var scrollPercent = Math.round(Math.min(100 * window.pageYOffset / contentVisibilityHeight, 100)) + '%';
+  const scrollPercent = Math.round(Math.min(100 * window.scrollY / contentVisibilityHeight, 100)) + '%';
   backToTop.child('span').innerText = scrollPercent;
   $('.percent').width(scrollPercent);
 }
@@ -236,8 +238,8 @@ const pagePosition = function() {
 }
 
 const positionInit = function(comment) {
-  var anchor = window.location.hash
-  var target = null;
+  const anchor = window.location.hash;
+  let target = null;
   if(LOCAL_HASH) {
     store.del(LOCAL_URL);
     return
@@ -262,7 +264,7 @@ const positionInit = function(comment) {
 }
 
 const clipBoard = function(str, callback) {
-  var ta = BODY.createChild('textarea', {
+  const ta = BODY.createChild('textarea', {
     style: {
       top: window.scrollY + 'px', // Prevent page scrolling
       position: 'absolute',
@@ -271,13 +273,14 @@ const clipBoard = function(str, callback) {
     readOnly: true,
     value: str
   });
-
   const selection = document.getSelection();
   const selected = selection.rangeCount > 0 ? selection.getRangeAt(0) : false;
   ta.select();
   ta.setSelectionRange(0, str.length);
   ta.readOnly = false;
-  var result = document.execCommand('copy');
+  const result = document.execCommand('copy');
+  // TODO 更改execCommand为clipboard方法
+  // const result = navigator.clipboard.writeText(ta.value)
   callback && callback(result);
   ta.blur(); // For iOS
   if (selected) {

@@ -1,3 +1,4 @@
+'use strict';
 const getRndInteger = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -10,7 +11,7 @@ const getScript = function(url, callback, condition) {
   if (condition) {
     callback();
   } else {
-    var script = document.createElement('script');
+    let script = document.createElement('script');
     script.onload = script.onreadystatechange = function(_, isAbort) {
       if (isAbort || !script.readyState || /loaded|complete/.test(script.readyState)) {
         script.onload = script.onreadystatechange = null;
@@ -24,7 +25,7 @@ const getScript = function(url, callback, condition) {
 }
 
 const assetUrl = function(asset, type) {
-  var str = CONFIG[asset][type]
+  const str = CONFIG[asset][type];
   if(str.indexOf('npm')>-1||str.indexOf('gh')>-1||str.indexOf('combine')>-1)
     return "//cdn.jsdelivr.net/" + str
 
@@ -58,10 +59,10 @@ const vendorCss = function(type, condition) {
 }
 
 const pjaxScript = function(element) {
-  var code = element.text || element.textContent || element.innerHTML || '';
-  var parent = element.parentNode;
+  const code = element.text || element.textContent || element.innerHTML || '';
+  const parent = element.parentNode;
   parent.removeChild(element);
-  var script = document.createElement('script');
+  const script = document.createElement('script');
   if (element.id) {
     script.id = element.id;
   }
@@ -86,21 +87,21 @@ const pjaxScript = function(element) {
 }
 
 const pageScroll = function(target, offset, complete) {
-  var opt = {
+  const opt = {
     targets: typeof offset == 'number' ? target.parentNode : document.scrollingElement,
     duration: 500,
     easing: "easeInOutQuad",
     scrollTop: offset || (typeof target == 'number' ? target : (target ? target.top() + document.documentElement.scrollTop - siteNavHeight : 0)),
-    complete: function() {
+    complete: function () {
       complete && complete()
     }
-  }
+  };
   anime(opt);
 }
 
 const transition = function(target, type, complete) {
-  var animation = {}
-  var display = 'none'
+  let animation;
+  let display = 'none';
   switch(type) {
     case 0:
       animation = {opacity: [1, 0]}

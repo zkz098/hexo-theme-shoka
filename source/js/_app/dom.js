@@ -18,7 +18,7 @@ $.each = function(selector, callback, element) {
 
 Object.assign(HTMLElement.prototype, {
   createChild: function(tag, obj, positon) {
-    var child = document.createElement(tag);
+    const child = document.createElement(tag);
     Object.assign(child, obj)
     switch(positon) {
       case 'after':
@@ -32,7 +32,7 @@ Object.assign(HTMLElement.prototype, {
     return child
   },
   wrap: function (obj) {
-    var box = document.createElement('div');
+    const box = document.createElement('div');
     Object.assign(box, obj)
     this.parentNode.insertBefore(box, this);
     this.parentNode.removeChild(this);
@@ -69,8 +69,8 @@ Object.assign(HTMLElement.prototype, {
     }
   },
   insertAfter: function(element) {
-    var parent = this.parentNode;
-    if(parent.lastChild == this){
+    const parent = this.parentNode;
+    if(parent.lastChild === this){
         parent.appendChild(element);
     }else{
         parent.insertBefore(element, this.nextSibling);
@@ -91,10 +91,10 @@ Object.assign(HTMLElement.prototype, {
     return $.all(selector, this)
   },
   _class: function(type, className, display) {
-    var classNames = className.indexOf(' ') ?  className.split(' ') : [className];
-    var that = this;
+    const classNames = className.indexOf(' ') ? className.split(' ') : [className];
+    const that = this;
     classNames.forEach(function(name) {
-      if(type == 'toggle') {
+      if(type === 'toggle') {
         that.classList.toggle(name, display)
       } else {
         that.classList[type](name)

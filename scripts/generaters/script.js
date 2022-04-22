@@ -1,15 +1,13 @@
 'use strict';
 const fs = require('hexo-fs');
-const url = require('url');
-
 
 hexo.extend.generator.register('script', function(locals){
   const config = hexo.config;
   const theme = hexo.theme.config;
 
-  var env = require('../../package.json')
+  const env = require('../../package.json');
 
-  var siteConfig = {
+  const siteConfig = {
     version: env['version'],
     hostname: config.url,
     root: config.root,
@@ -33,10 +31,10 @@ hexo.extend.generator.register('script', function(locals){
       fancybox: theme.vendors.css.fancybox
     },
     loader: theme.loader,
-    search : null,
+    search: null,
     valine: theme.valine,
     quicklink: {
-      timeout : theme.quicklink.timeout,
+      timeout: theme.quicklink.timeout,
       priority: theme.quicklink.priority
     }
   };

@@ -3,7 +3,6 @@
 'use strict';
 
 const path = require('path');
-const url = require('url');
 
 const fmtNum = num => {
   return num < 10 ? '0' + num : num;
@@ -15,7 +14,7 @@ hexo.extend.filter.register('template_locals', locals => {
   const { __, theme } = locals;
   const { i18n } = hexo.theme;
 
-  var pangu = theme.pangu ? require('pangu') : {
+  const pangu = theme.pangu ? require('pangu') : {
     spacing: data => {
       return data;
     }
@@ -30,7 +29,7 @@ hexo.extend.filter.register('template_locals', locals => {
   locals.languages = [...i18n.languages];
   locals.languages.splice(locals.languages.indexOf('default'), 1);
   locals.page.lang = locals.page.lang || locals.page.language;
-  locals.hostname = url.parse(config.url).hostname || config.url;
+  locals.hostname = new URL(config.url).hostname || config.url;
 
   // Creative Commons
   locals.ccURL = 'https://creativecommons.org/' + (theme.creative_commons.license === 'zero' ? 'publicdomain/zero/1.0/' : 'licenses/' + theme.creative_commons.license + '/4.0/') + (theme.creative_commons.language || '');

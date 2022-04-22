@@ -4,5 +4,13 @@
   "description": "",
   "author": "Ruri Shimotsuki",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "hexo-fs": "^3.1.0",
+    "hexo-pagination": "^2.0.0",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
+    "nunjucks": "^3.2.3",
+    "pangu": "^4.0.7"
+  }
 }

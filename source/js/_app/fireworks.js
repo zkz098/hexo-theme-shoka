@@ -1,13 +1,14 @@
-var canvasEl = document.createElement('canvas');
+'use strict';
+const canvasEl = document.createElement('canvas');
 canvasEl.style.cssText = 'position:fixed;top:0;left:0;pointer-events:none;z-index:9999999';
 document.body.appendChild(canvasEl);
 
-var ctx = canvasEl.getContext('2d');
-var numberOfParticules = 30;
-var pointerX = 0;
-var pointerY = 0;
-var tap = 'click'; // ('ontouchstart' in window || navigator.msMaxTouchPoints) ? 'touchstart' : 'mousedown'
-var colors = CONFIG.fireworks;
+const ctx = canvasEl.getContext('2d');
+let numberOfParticules = 30;
+let pointerX = 0;
+let pointerY = 0;
+let tap = 'click'; // ('ontouchstart' in window || navigator.msMaxTouchPoints) ? 'touchstart' : 'mousedown'
+const colors = CONFIG.fireworks;
 
 function setCanvasSize() {
   canvasEl.width = window.innerWidth * 2;
@@ -23,9 +24,9 @@ function updateCoords(e) {
 }
 
 function setParticuleDirection(p) {
-  var angle = anime.random(0, 360) * Math.PI / 180;
-  var value = anime.random(50, 180);
-  var radius = [-1, 1][anime.random(0, 1)] * value;
+  const angle = anime.random(0, 360) * Math.PI / 180;
+  const value = anime.random(50, 180);
+  const radius = [-1, 1][anime.random(0, 1)] * value;
   return {
     x: p.x + radius * Math.cos(angle),
     y: p.y + radius * Math.sin(angle)
@@ -33,7 +34,7 @@ function setParticuleDirection(p) {
 }
 
 function createParticule(x,y) {
-  var p = {};
+  let p = {};
   p.x = x;
   p.y = y;
   p.color = colors[anime.random(0, colors.length - 1)];
@@ -49,7 +50,7 @@ function createParticule(x,y) {
 }
 
 function createCircle(x,y) {
-  var p = {};
+  let p = {};
   p.x = x;
   p.y = y;
   p.color = '#FFF';
@@ -69,15 +70,15 @@ function createCircle(x,y) {
 }
 
 function renderParticule(anim) {
-  for (var i = 0; i < anim.animatables.length; i++) {
+  for (let i = 0; i < anim.animatables.length; i++) {
     anim.animatables[i].target.draw();
   }
 }
 
 function animateParticules(x, y) {
-  var circle = createCircle(x, y);
-  var particules = [];
-  for (var i = 0; i < numberOfParticules; i++) {
+  let circle = createCircle(x, y);
+  let particules = [];
+  for (let i = 0; i < numberOfParticules; i++) {
     particules.push(createParticule(x, y));
   }
   anime.timeline().add({
@@ -103,7 +104,7 @@ function animateParticules(x, y) {
   }, 0);
 }
 
-var render = anime({
+let render = anime({
   duration: Infinity,
   update: function() {
     ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
