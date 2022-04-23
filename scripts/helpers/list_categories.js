@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require('hexo-fs');
+var fs = require('hexo-fs');
 
 const prepareQuery = (categories, parent) => {
   const query = {};

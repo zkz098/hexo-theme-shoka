@@ -23,15 +23,31 @@ git clone https://github.com/amehime/hexo-theme-shoka.git ./themes/shoka
 
 5. [中文使用说明](https://shoka.lostyu.me/computer-science/note/theme-shoka-doc/)
 
-# 这个分支的说明
-这个分支是一个**不稳定**的分支,包含大量未验证的更改 \
-会有少量且不稳定的优化和更新
-
-已实现的更改:
-- 没有
-
-计划中的更改:
-- 更加规范的变量定义
-- 弃用方法问题(长期)
-- cover使用webp
-- 模块化js(长期)
+# twikoo支持
+**此主题仅供私用,需twikoo支持可参考代码**
+这个分支添加了对twikoo评论系统的支持
+在主题_config.yml中添加如下内容:
+```yaml
+twikoo:
+  enable: true
+  mode: vercel # vercel或tencent
+  envId: "https://xxx.vercel.app" # twikoo环境ID,vercel填地址
+  region: "none" #tencent填对应ap地域,vercel随便填
+```
+就可以启用twikoo了
+twikoo支持改动的文件(模板):
+```text
+layout/_macro/comment.njk
+layout/_partials/post/footer.njk
+layout/_macro/widgets.njk
+```
+pjax问题的解决:
+```text
+scripts/helpers/asset.js
+scripts\generaters\script.js
+```
+目前的改动:
+- 可以自定义404页
+- 导航栏毛玻璃
+- twikoo提供的阅读量统计
+- 友链快捷方式(需手写代码)~~懒得搞最新评论~~

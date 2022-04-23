@@ -14,10 +14,10 @@ hexo.extend.generator.register('pages', function(locals){
       data: {type: 'tags'},
       layout: ['page']
     },
-    {
-      path: '404.html',
-      data: {type: '404'},
-      layout: ['page']
-    }
+    // {
+    //   path: '404.html',
+    //   data: {type: '404'},
+    //   layout: ['page']
+    // }
   ]
 });

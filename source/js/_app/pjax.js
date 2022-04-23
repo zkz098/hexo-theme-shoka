@@ -1,4 +1,3 @@
-'use strict';
 const domInit = function() {
   $.each('.overview .menu > .item', function(el) {
     siteNav.child('.menu').appendChild(el.cloneNode(true));
@@ -57,7 +56,7 @@ const siteRefresh = function (reload) {
   vendorCss('mermaid');
   vendorJs('chart');
   vendorJs('valine', function() {
-    let options = Object.assign({}, CONFIG.valine);
+    var options = Object.assign({}, CONFIG.valine);
     options = Object.assign(options, LOCAL.valine||{});
     options.el = '#comments';
     options.pathname = LOCAL.path;
@@ -119,6 +118,7 @@ const siteInit = function () {
 
   CONFIG.quicklink.ignores = LOCAL.ignores
   quicklink.listen(CONFIG.quicklink)
+  autoDarkmode()   // 新增
 
   visibilityListener()
   themeColorListener()

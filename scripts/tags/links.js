@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
+const url = require('url');
 
 function linkGrid(args, content) {
   const theme = hexo.theme.config;
@@ -37,24 +38,24 @@ function linkGrid(args, content) {
     return
   }
 
-  const siteHost = new URL(hexo.config.url).hostname || hexo.config.url;
+  const siteHost = url.parse(hexo.config.url).hostname || hexo.config.url;
 
   const list = yaml.load(content);
 
-  let result = '';
+  var result = ''
 
   list.forEach(item => {
     if(!item.url || !item.site) {
       return;
     }
 
-    let urlparam = {};
+    var urlparam = {};
 
     if(item.url) {
-      urlparam = new URL(item.url);
+      urlparam = url.parse(item.url);
     }
 
-    let item_image = item.image || theme.images + '/404.png';
+    var item_image = item.image || theme.images + '/404.png';
 
     if (!item_image.startsWith('//') && !item_image.startsWith('http')) {
       item_image = theme.statics + item_image;
@@ -65,7 +66,7 @@ function linkGrid(args, content) {
     result += `<div class="item" title="${item.owner || item.site}"${item.color}>`;
 
     if (urlparam.protocol && urlparam.hostname !== siteHost) {
-      const durl = Buffer.from(item.url).toString('base64');
+      var durl = Buffer.from(item.url).toString('base64');
       result += `<span class="exturl image" data-url="${durl}" data-background-image="${item_image}"></span>
           <div class="info">
           <span class="exturl title" data-url="${durl}">${item.site}</span>

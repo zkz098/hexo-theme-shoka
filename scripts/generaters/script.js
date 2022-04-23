@@ -1,13 +1,15 @@
 'use strict';
 const fs = require('hexo-fs');
+const url = require('url');
+
 
 hexo.extend.generator.register('script', function(locals){
   const config = hexo.config;
   const theme = hexo.theme.config;
 
-  const env = require('../../package.json');
+  var env = require('../../package.json')
 
-  const siteConfig = {
+  var siteConfig = {
     version: env['version'],
     hostname: config.url,
     root: config.root,
@@ -17,12 +19,15 @@ hexo.extend.generator.register('script', function(locals){
       hidden: theme.images + "/failure.ico"
     },
     darkmode: theme.darkmode,
+    auto_dark: theme.auto_dark,
     auto_scroll: theme.auto_scroll,
     js: {
       valine: theme.vendors.js.valine,
       chart: theme.vendors.js.chart,
       copy_tex: theme.vendors.js.copy_tex,
-      fancybox: theme.vendors.js.fancybox
+      fancybox: theme.vendors.js.fancybox,
+      echarts: theme.vendors.js.echarts,
+      twikoo: theme.vendors.js.twikoo,
     },
     css: {
       valine: theme.css + "/comment.css",
@@ -31,10 +36,10 @@ hexo.extend.generator.register('script', function(locals){
       fancybox: theme.vendors.css.fancybox
     },
     loader: theme.loader,
-    search: null,
+    search : null,
     valine: theme.valine,
     quicklink: {
-      timeout: theme.quicklink.timeout,
+      timeout : theme.quicklink.timeout,
       priority: theme.quicklink.priority
     }
   };
