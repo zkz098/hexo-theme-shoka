@@ -45,7 +45,7 @@ hexo.extend.helper.register('_vendor_js', () => {
   if (!config) return '';
 
   //Get a font list from config
-  let vendorJs = ['pace', 'pjax', 'fetch', 'anime', 'algolia', 'instantsearch', 'lazyload', 'quicklink', 'twikoo'].map(item => {
+  let vendorJs = ['pace', 'pjax', 'fetch', 'anime', 'algolia', 'instantsearch', 'lazyload', 'quicklink'].map(item => {
     if (config[item]) {
       return config[item];
     }
@@ -56,9 +56,9 @@ hexo.extend.helper.register('_vendor_js', () => {
   vendorJs = [...new Set(vendorJs)];
   vendorJs = vendorJs.join(',');
 
-  let result = vendorJs ? `<script src="https://cdn1.tianli0.top/combine/${vendorJs}"></script>` : '';
+  let result = vendorJs ? `<script src="https://jsd.kaitaku.xyz/combine/${vendorJs}"></script>` : '';
 
-  return vendorJs ? htmlTag('script', { src: `https://cdn1.tianli0.top/combine/${vendorJs}` }, '') : '';
+  return vendorJs ? htmlTag('script', { src: `https://jsd.kaitaku.xyz/combine/${vendorJs}` }, '') : '';
 });
 
 hexo.extend.helper.register('_css', function(...urls) {
@@ -73,3 +73,29 @@ hexo.extend.helper.register('_js', function(...urls) {
 
   return urls.map(url => htmlTag('script', { src: url_for.call(this, `${statics}${js}/${url}?v=${theme_env['version']}`) }, '')).join('');
 });
+
+hexo.extend.helper.register('_list_vendor_js', () => {
+    return hexo.theme.config.vendorsList.js;
+});
+
+hexo.extend.helper.register('_adv_vendor_js', function (js_name) {
+    const config = hexo.theme.config.advVendors.js[js_name];
+    const src = config["src"];
+    let result;
+    if (src.indexOf("http")!==-1) {
+        result = src;
+    } else if (src.indexOf("combine")!==-1){
+        console.log("The combine feature is not recommended!")
+        result = hexo.theme.config.advVendors.combine + src;
+    } else if (src.indexOf("npm")!==-1){
+        result = hexo.theme.config.advVendors.npm + src.slice(4);
+    } else if (src.indexOf("gh")!==-1){
+        result = hexo.theme.config.advVendors.github + src.slice(3);
+    } else {
+        result = "/"+src;
+    }
+    let attr = {src: result};
+    if (!!config["async"]) attr["async"] = "async";
+    if (!!config["data-pjax"]) attr["data-pjax"] = "data-pjax";
+    return htmlTag('script', attr, '')
+})

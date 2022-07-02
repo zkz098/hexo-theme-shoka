@@ -9,6 +9,8 @@ $item {
 
   &.show {
     @extend .slide-up-big-in;
+    content-visibility: auto;
+    contain-intrinsic-size: 250px;
     opacity: 1;
   }
 
@@ -51,7 +53,7 @@ $item {
     }
   }
 
-  .active .btn {  
+  .active .btn {
     transform-style: preserve-3d;
     transform: translateZ(2rem);
     backface-visibility: hidden;

@@ -1,5 +1,10 @@
 <div class="meta">
   {%- if date(post.date) != date(post.updated) or time(post.date) != time(post.updated) %}
+  <span class="icon">
+        <i class="ic i-eye"></i>
+  </span>
+  <span>此文章已被阅读次数: </span>
+  <span id="twikoo_visitors">正在加载...</span>
   <span class="item">
     <span class="icon">
       <i class="ic i-calendar-check"></i>
@@ -15,7 +20,6 @@
         <i class="ic i-eye"></i>
       </span>
       <span class="text">{{ __('post.views') }}</span>
-      <span class="leancloud-visitors-count"></span>
       <span class="text">{{ __('symbols_count_time.view') }}</span>
   </span>
   {%- endif %}

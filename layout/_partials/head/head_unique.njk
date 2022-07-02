@@ -2,12 +2,22 @@
   <meta name="keywords" content="{{ page.keywords }}" />
 {% elif page.tags and page.tags.length %}
   <meta name="keywords" content="{% for tag in page.tags.toArray() %}{{ tag.name }}{% if not loop.last %},{% endif %}{% endfor %}" />
-{% elif theme.keywords %}
-  <meta name="keywords" content="{{ theme.keywords }}" />
+{% elif config.keywords %}
+  <meta name="keywords" content="{{ config.keywords }}" />
 {% endif %}
 
 {{ canonical() }}
+<meta http-equiv='content-language' content='zh-CN'>
 
 {% if theme.open_graph %}
 {{ open_graph(theme.open_graph) }}
 {% endif %}
+
+<style type="text/css">
+.tk-owo-emotion {
+  display:inline !important;
+}
+img[data-v-7d48daab] {
+  max-width: 2em !important; 
+}
+</style>

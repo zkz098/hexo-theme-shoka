@@ -141,14 +141,70 @@
     ]
   };
 </script>
-
-<script src="https://cdn.polyfill.io/v2/polyfill.js"></script>
-
-{{ _vendor_js() }}
-
+<script src="https://cdn.polyfill.io/v3/polyfill.js"></script>
+{%- if theme.advVendors.enable %}
+  {% for i in _list_vendor_js() %}
+    {{ _adv_vendor_js(i) }}
+  {% endfor %}
+{%- else %}
+  {{ _vendor_js() }}
+{%- endif %}
 {{ _js('app.js')}}
 
 {{ partial('_partials/third-party/baidu-analytics.njk', {}, {cache: true}) }}
-
+<script data-pjax>
+    twikoo.getRecentComments({envId:"{{ theme.twikoo.envId }}",pageSize:10}).then(function(d){d.forEach(function(a){var b=a.url+"#"+a.id,g=document.getElementById("twikoo_comment"),e=document.createElement("li");e.className="item";var c=document.createElement("a");c.setAttribute("href",b);c.setAttribute("data-pjax-state","data-pjax-state");b=document.createElement("span");b.innerText=a.nick+"@"+a.relativeTime;b.className="breadcrumb";var f=document.createElement("span");f.innerText=a.commentText;c.appendChild(b);
+c.appendChild(f);e.appendChild(c);g.appendChild(e)})}).catch(function(d){console.log(d)});
+</script>
+<script>
+if (document.body.offsetWidth >= 430) {
+    WIDGET = {
+        "CONFIG": {
+            "modules": "012",
+            "background": "5",
+            "tmpColor": "var(--text-color);",
+            "tmpSize": "16",
+            "cityColor": "var(--text-color);",
+            "citySize": "16",
+            "aqiColor": "FFFFFF",
+            "aqiSize": "16",
+            "weatherIconSize": "24",
+            "alertIconSize": "18",
+            "padding": "10px 10px 10px 10px",
+            "shadow": "0",
+            "language": "auto",
+            "borderRadius": "5",
+            "fixed": "false",
+            "vertical": "top",
+            "horizontal": "left",
+            "key": "d76b60e20f11404cb43475dcf307c071"
+        }
+    }
+} else {
+    WIDGET = {
+        "CONFIG": {
+            "modules": "2",
+            "background": "5",
+            "tmpColor": "var(--text-color);",
+            "tmpSize": "16",
+            "cityColor": "var(--text-color);",
+            "citySize": "16",
+            "aqiColor": "FFFFFF",
+            "aqiSize": "16",
+            "weatherIconSize": "24",
+            "alertIconSize": "18",
+            "padding": "10px 10px 10px 10px",
+            "shadow": "0",
+            "language": "auto",
+            "borderRadius": "5",
+            "fixed": "false",
+            "vertical": "top",
+            "horizontal": "left",
+            "key": "d76b60e20f11404cb43475dcf307c071"
+        }
+    }
+}
+</script>
+<script async data-pjax src="https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0"></script>
 </body>
 </html>

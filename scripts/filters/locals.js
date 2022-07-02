@@ -15,13 +15,13 @@ hexo.extend.filter.register('template_locals', locals => {
   const { __, theme } = locals;
   const { i18n } = hexo.theme;
 
-  var pangu = theme.pangu ? require('pangu') : {
-    spacing: data => {
-      return data;
-    }
-  };
+    const pangu = theme.pangu ? require('pangu') : {
+        spacing: data => {
+            return data;
+        }
+    };
 
-  // Language & Config
+    // Language & Config
   locals.alternate = theme.alternate;
   locals.title = pangu.spacing(__('title') !== 'title' ? __('title') : config.title);
   locals.subtitle = pangu.spacing(__('subtitle') !== 'subtitle' ? __('subtitle') : config.subtitle);

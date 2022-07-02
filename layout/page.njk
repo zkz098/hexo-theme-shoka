@@ -54,10 +54,10 @@
         }}
       </div>
   </div>
-{%- elif page.type === '404' %}
-  <div class="page wrap">
-    <div class="notfound">{{ __('title.not_found') }}</div>
-  </div>
+{# {%- elif page.type === '404' %} #}
+{#  <div class="page wrap"> #}
+{#    <div class="notfound">{{ __('title.not_found') }}</div> #}
+{#  </div> #}
 {%- else %}
   <div class="page wrap">
     {{ partial('_partials/post/post.njk', {post: page}) }}

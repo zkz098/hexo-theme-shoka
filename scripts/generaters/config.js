@@ -29,8 +29,8 @@ hexo.extend.filter.register('before_generate', () => {
   hexo.theme.config.style = {}
 
   for (const style of ['iconfont', 'colors', 'custom']) {
-    var custom_file = 'source/_data/'+style+'.styl'
-    if (fs.existsSync(custom_file)) {
+      const custom_file = 'source/_data/' + style + '.styl';
+      if (fs.existsSync(custom_file)) {
       hexo.theme.config.style[style] = path.resolve(hexo.base_dir, custom_file)
     }
   }

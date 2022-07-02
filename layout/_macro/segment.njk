@@ -3,7 +3,7 @@
   {%- set postTitleIcon = '<i class="ic i-link-alt"></i>' %}
 {%- endif %}
 {%- set postText = item.title or item.link or __('post.untitled') %}
-<article class="item">
+<article class="item" data-clarity-region="article">
   <div class="cover">
     {{ _url(item.link or item.path, '<img data-src="'+ _cover(item) +'">', {itemprop: 'url', title: postText}) }}
   </div>
